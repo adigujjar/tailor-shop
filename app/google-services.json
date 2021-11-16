@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "689858070927",
-    "firebase_url": "https://taylorshop-60cf4.firebaseio.com",
-    "project_id": "taylorshop-60cf4",
-    "storage_bucket": "taylorshop-60cf4.appspot.com"
+    "project_number": "643133289275",
+    "project_id": "tailorrafique-79540",
+    "storage_bucket": "tailorrafique-79540.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689858070927:android:55b58cd599e4f399",
+        "mobilesdk_app_id": "1:643133289275:android:5f21efa65b510f4f813d1e",
         "android_client_info": {
           "package_name": "com.example.taylorshop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "689858070927-7t0m63h6p8gljnodj21l12pr5fjk9abv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.taylorshop",
-            "certificate_hash": "0740ca83ab2ec72701d653bdf167cfbcce52b85c"
-          }
-        },
-        {
-          "client_id": "689858070927-hs1dqdos6vdbm69ibc9g5a0e3mompea5.apps.googleusercontent.com",
+          "client_id": "643133289275-abr38alb7uttv2t7gff8dd7obquephfm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCW_k0wZrNgLssu8JKwBMi5pYfqaOdHbVM"
+          "current_key": "AIzaSyDnNwsaXN6CdumDSKkOIKj90dni-LLkDts"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "689858070927-hs1dqdos6vdbm69ibc9g5a0e3mompea5.apps.googleusercontent.com",
+              "client_id": "643133289275-abr38alb7uttv2t7gff8dd7obquephfm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
