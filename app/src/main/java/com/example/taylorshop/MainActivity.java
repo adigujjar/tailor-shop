@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Customer> arrayList = new ArrayList<Customer>();
     FloatingActionButton floatingActionButton;
     public SearchView searchView;
-    DatabaseReference databaseReference;
+    public DatabaseReference databaseReference;
     CustomAdapter customAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Hawk.init(this).build();
 
         floatingActionButton = findViewById(R.id.fab);
         //searchView = findViewById(R.id.search_phone);
@@ -74,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
                 for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
                     Customer customer = postsnapshot.getValue(Customer.class);
+                    customer.setKey(postsnapshot.getKey());
                     customer.getName();
                     customer.getSerial_number();
                     customer.getPhone_number();
