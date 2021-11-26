@@ -1,8 +1,6 @@
 package com.example.taylorshop.Fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,27 +10,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.taylorshop.MainActivity;
 import com.example.taylorshop.Models.Customer;
 import com.example.taylorshop.R;
+import com.example.taylorshop.interfaces.PopupCallback;
+import com.example.taylorshop.ui.PopUp;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.HashMap;
-import java.util.Objects;
 
-public class CustomerView extends Fragment implements View.OnClickListener {
-    TextView txtser, txtname, txtmble;
-    EditText suitLength, suitArms, suitShoulders, suitModa,
-            suitPocket, suitChest, suitBack, suitChestLoose,
-            suitBackLoose, trouserLength, trouserPhncha, suitExtraNotes,
-            suitNeck, suitCuff, suitdaman;
+public class CustomerView extends Fragment implements View.OnClickListener, PopupCallback {
+    TextView txtser;
+    EditText suitLength, suitArms, suitShoulders, suitModa, suitChest, suitBack, suitChestLoose, txtname,
+            suitBackLoose, trouserLength, trouserPhncha, suitExtraNotes, suitNeck, suitCuff, suitdaman, txtmble;
 
     Button btnSaveInfo;
     Customer customer;
+    CheckBox pocketOne,pocketTwo,pocketThree,pocketFour;
+
+    PopupCallback popupCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +47,6 @@ public class CustomerView extends Fragment implements View.OnClickListener {
         suitArms = view.findViewById(R.id.armsValue);
         suitShoulders = view.findViewById(R.id.shoulderValue);
         suitModa = view.findViewById(R.id.modavalue);
-        suitPocket = view.findViewById(R.id.pocketValue);
         suitChest = view.findViewById(R.id.chestValue);
         suitBack = view.findViewById(R.id.backValue);
         suitChestLoose = view.findViewById(R.id.chestLooseValue);
@@ -60,9 +59,12 @@ public class CustomerView extends Fragment implements View.OnClickListener {
         suitCuff = view.findViewById(R.id.cuffDesign);
         btnSaveInfo = view.findViewById(R.id.save);
 
+        pocketOne = view.findViewById(R.id.checkbox1);
+        pocketTwo = view.findViewById(R.id.checkbox2);
+        pocketThree = view.findViewById(R.id.checkbox3);
+        pocketFour = view.findViewById(R.id.checkbox4);
 
         customer = Hawk.get("customer");
-//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("customer_view", Context.MODE_PRIVATE);
         txtser.setText(customer.getSerial_number());
         txtname.setText(customer.getName());
         txtmble.setText(customer.getPhone_number());
@@ -70,7 +72,16 @@ public class CustomerView extends Fragment implements View.OnClickListener {
         suitArms.setText(customer.getArmsSuit());
         suitShoulders.setText(customer.getShoulderSuit());
         suitModa.setText(customer.getSuitModa());
-        suitPocket.setText(customer.getSuitPocket());
+        if (customer.getSuitPocket().equals("1")) {
+            pocketOne.setChecked(true);
+        } else if (customer.getSuitPocket().equals("2")) {
+            pocketTwo.setChecked(true);
+        } else if (customer.getSuitPocket().equals("3")) {
+            pocketThree.setChecked(true);
+        } else {
+            pocketFour.setChecked(true);
+        }
+
         suitChest.setText(customer.getChestSuit());
         suitBack.setText(customer.getBackSuit());
         suitChestLoose.setText(customer.getChestLoose());
@@ -80,11 +91,21 @@ public class CustomerView extends Fragment implements View.OnClickListener {
         suitExtraNotes.setText(customer.getSuitExtraNotes());
         suitNeck.setText(customer.getNeckSuit());
         suitdaman.setText(customer.getSuitFront());
-
+        suitCuff.setText(customer.getSuitCuff());
         btnSaveInfo.setOnClickListener(this);
-
+        pocketOne.setOnClickListener(this);
+        pocketTwo.setOnClickListener(this);
+        pocketThree.setOnClickListener(this);
+        pocketFour.setOnClickListener(this);
 
         return view;
+    }
+
+    private void resetPockets() {
+        pocketOne.setChecked(false);
+        pocketTwo.setChecked(false);
+        pocketThree.setChecked(false);
+        pocketFour.setChecked(false);
     }
 
     @Override
@@ -98,6 +119,7 @@ public class CustomerView extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        popupCallback = this;
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Customer Info");
         getActivity().findViewById(R.id.action_search).setVisibility(View.GONE);
         getActivity().findViewById(R.id.fab).setVisibility(View.GONE);
@@ -105,17 +127,46 @@ public class CustomerView extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (v == pocketOne) {
+            resetPockets();
+            pocketOne.setChecked(true);
+        } else if (v == pocketTwo) {
+            resetPockets();
+            pocketTwo.setChecked(true);
+        } else if (v == pocketThree) {
+            resetPockets();
+            pocketThree.setChecked(true);
+        } else if (v == pocketFour){
+            resetPockets();
+            pocketFour.setChecked(true);
+        }
+
         if (v == btnSaveInfo) {
+            String pockets = "";
+            if (pocketOne.isChecked()) {
+                pockets = "1";
+            } else if (pocketTwo.isChecked()) {
+                pockets = "2";
+            } else if (pocketThree.isChecked()) {
+                pockets = "3";
+            } else {
+                pockets = "4";
+            }
+
             customer = new Customer(
                     txtser.getText().toString(), txtname.getText().toString(), txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
                     suitChest.getText().toString(), suitBack.getText().toString(), suitNeck.getText().toString(), suitChestLoose.getText().toString(), suitBackLoose.getText().toString(), suitdaman.getText().toString(),
-                    trouserLength.getText().toString(), trouserPhncha.getText().toString(), suitPocket.getText().toString(), suitModa.getText().toString(), suitExtraNotes.getText().toString(), customer.getKey()
+                    trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey()
             );
 
-
-            HashMap<String, Object> childUpdates = new HashMap<String, Object>();
-            childUpdates.put(customer.getKey(), customer);
-            ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
+            PopUp.getInstance().myDialog(requireContext(), popupCallback, "Are you sure you want to update..", "This customer data will update by Anmol Tailor", -1);
         }
+    }
+
+    @Override
+    public void onClick(int position) {
+        HashMap<String, Object> childUpdates = new HashMap<String, Object>();
+        childUpdates.put(customer.getKey(), customer);
+        ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
     }
 }

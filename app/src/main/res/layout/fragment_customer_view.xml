@@ -68,13 +68,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/customer_view_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:text="Name"
+                android:hint="Name"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -95,13 +97,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/customer_view_Mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:text="Mobile"
+                android:hint="Mobile"
+                android:inputType="number"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -129,6 +133,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="12"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -157,6 +163,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="12"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -184,7 +192,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -213,6 +223,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="12"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -240,7 +252,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -268,7 +282,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -296,7 +312,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -323,7 +341,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="text"
                 android:layout_weight="1"
+                android:imeOptions="actionNext"
                 android:text="12"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -351,8 +371,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="text"
                 android:layout_weight="1"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -379,8 +401,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="text"
                 android:layout_weight="1"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -408,7 +432,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -416,7 +442,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/pocket"
@@ -430,14 +456,72 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/pocketValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:text="12"
-                android:textSize="20sp" />
+<!--            <EditText-->
+<!--                android:id="@+id/pocketValue"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="12"-->
+<!--                android:textSize="20sp" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/checkbox1"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:id="@+id/pocketOne"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/checkbox2"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:id="@+id/pocketTwo"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/checkbox3"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/pocketThree"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/checkbox4"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:id="@+id/pocketFour"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
 
 
@@ -462,9 +546,11 @@
                 android:id="@+id/modavalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="12"
+                android:imeOptions="actionNext"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -492,6 +578,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:text="12"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -500,7 +588,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/notes"
@@ -516,11 +604,13 @@
 
             <EditText
                 android:id="@+id/notesValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:inputType="text"
                 android:text="12"
+                android:imeOptions="actionDone"
                 android:textSize="20sp" />
         </LinearLayout>
 

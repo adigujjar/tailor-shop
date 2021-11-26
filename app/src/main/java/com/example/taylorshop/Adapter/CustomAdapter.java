@@ -21,6 +21,8 @@ import com.example.taylorshop.Fragment.CustomerView;
 import com.example.taylorshop.MainActivity;
 import com.example.taylorshop.Models.Customer;
 import com.example.taylorshop.R;
+import com.example.taylorshop.interfaces.PopupCallback;
+import com.example.taylorshop.ui.PopUp;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -32,13 +34,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public Context context;
     @NonNull
    ArrayList<Customer> customerArrayList = new ArrayList<Customer>();
+    private PopupCallback popupCallback;
 
-    public CustomAdapter() {
-    }
 
-    public CustomAdapter(@NonNull ArrayList<Customer> customerArrayList, Context context) {
+    public CustomAdapter(@NonNull ArrayList<Customer> customerArrayList, Context context,  PopupCallback popupCallback) {
         this.customerArrayList = customerArrayList;
         this.context = context;
+        this.popupCallback = popupCallback;
+    }
+
+    public CustomAdapter(ArrayList<Customer> srchList, Context applicationContext) {
+        this.customerArrayList = srchList;
+        this.context = applicationContext;
     }
 
     @Override
@@ -59,21 +66,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = customerArrayList.get(position).getName();
-                String serial = customerArrayList.get(position).getSerial_number();
-                String mble = customerArrayList.get(position).getPhone_number();
                 Hawk.put("customer", customerArrayList.get(position));
-//                SharedPreferences sharedPreferences = context.getSharedPreferences("customer_view", Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString("serial", serial);
-//                editor.putString("name", name);
-//                editor.putString("mobile", mble);
-//                editor.apply();
-//                editor.commit();
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment fragment = new CustomerView();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("customerview").commit();
                 Log.e("check", customerArrayList.get(position).getName());
+            }
+        });
+        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                PopUp.getInstance().myDialog(v.getContext(), popupCallback, "Delete entry", "Are you sure you want to delete this entry?", position);
+                return false;
             }
         });
     }

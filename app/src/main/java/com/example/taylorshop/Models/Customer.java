@@ -18,6 +18,7 @@ public class Customer{
     private  String suitPocket;
     private  String suitModa;
     private  String suitExtraNotes;
+    private  String suitCuff;
     private  String key;
 
     public Customer() {
@@ -38,6 +39,7 @@ public class Customer{
                     String suitPocket,
                     String suitModa,
                     String suitExtraNotes,
+                    String suitCuff,
                     String key
     ) {
         this.serial_number = serial_number;
@@ -58,6 +60,7 @@ public class Customer{
         this.suitModa = suitModa;
         this.suitExtraNotes = suitExtraNotes;
         this.key = key;
+        this.suitCuff = suitCuff;
     }
 
     public void setKey(String key) {
@@ -202,6 +205,14 @@ public class Customer{
 
     public String getTrouserEdge() {
         return trouserEdge;
+    }
+
+    public void setSuitCuff(String suitCuff) {
+        this.suitCuff = suitCuff;
+    }
+
+    public String getSuitCuff() {
+        return suitCuff;
     }
 }
 

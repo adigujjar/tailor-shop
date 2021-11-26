@@ -84,7 +84,7 @@ public class AddNewCustomer extends Fragment {
         progressDialog = new ProgressDialog(getContext(),R.style.Custom);
         //progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
-        Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","");
+        Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0");
         databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -95,10 +95,6 @@ public class AddNewCustomer extends Fragment {
                     if(imm.isAcceptingText()) { // verify if the soft keyboard is open
                         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     }
-//                    FragmentManager fm = getActivity().getSupportFragmentManager();
-//                    if(fm.getBackStackEntryCount()>0) {
-//                        fm.popBackStack();
-//                    }
                     getActivity().finish();
                     startActivity(new Intent(getContext(), MainActivity.class));
                 }
@@ -123,8 +119,6 @@ public class AddNewCustomer extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Customer");
         getActivity().findViewById(R.id.action_search).setVisibility(View.GONE);
         getActivity().findViewById(R.id.fab).setVisibility(View.GONE);
-
-
     }
 
     @Override
@@ -133,7 +127,5 @@ public class AddNewCustomer extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Taylor Shop");
         getActivity().findViewById(R.id.action_search).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.fab).setVisibility(View.VISIBLE);
-
-
     }
 }

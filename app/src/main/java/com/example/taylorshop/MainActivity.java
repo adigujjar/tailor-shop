@@ -4,12 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,11 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.taylorshop.Adapter.CustomAdapter;
 import com.example.taylorshop.Fragment.AddNewCustomer;
 import com.example.taylorshop.Models.Customer;
+import com.example.taylorshop.interfaces.PopupCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -33,26 +31,28 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.hawk.Hawk;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+
+public class MainActivity extends AppCompatActivity implements PopupCallback {
 
     public ArrayList<Customer> arrayList = new ArrayList<Customer>();
     FloatingActionButton floatingActionButton;
-    public SearchView searchView;
     public DatabaseReference databaseReference;
     CustomAdapter customAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private PopupCallback popupCallback;
+    private int position = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Hawk.init(this).build();
-
+        popupCallback = this;
         floatingActionButton = findViewById(R.id.fab);
         //searchView = findViewById(R.id.search_phone);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -64,10 +64,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Delteswipe();
-
         //fetch data offline
-        if (!FirebaseApp.getApps(this).isEmpty() && !isOnline() )
+        if (!FirebaseApp.getApps(this).isEmpty() && !isOnline())
             if (databaseReference != null)
                 FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
@@ -86,59 +84,18 @@ public class MainActivity extends AppCompatActivity {
                     arrayList.add(customer);
                 }
 
-                mAdapter = new CustomAdapter(arrayList, getApplicationContext());
+                mAdapter = new CustomAdapter(arrayList, getApplicationContext(), popupCallback);
                 layoutManager = new LinearLayoutManager(MainActivity.this);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(mAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-
-    public void Delteswipe()
-    {
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                //Remove swiped item from list and notify the RecyclerView
-                int position = viewHolder.getAdapterPosition();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                Query sQuery = ref.child("Contact").orderByChild("phone_number").equalTo(arrayList.get(position).getPhone_number());
-                sQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                        {
-                            snapshot.getRef().removeValue();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                arrayList.remove(position);
-                arrayList.clear();
-//                mAdapter = new CustomAdapter(arrayList);
-//                recyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,5 +155,27 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    @Override
+    public void onClick(int position) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query sQuery = ref.child("Contact").orderByChild("phone_number").equalTo(arrayList.get(position).getPhone_number());
+        sQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        arrayList.remove(position);
+        arrayList.clear();
+        if (customAdapter != null) customAdapter.notifyDataSetChanged();
     }
 }
