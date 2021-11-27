@@ -84,7 +84,7 @@ public class AddNewCustomer extends Fragment {
         progressDialog = new ProgressDialog(getContext(),R.style.Custom);
         //progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
-        Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0");
+        Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
         databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

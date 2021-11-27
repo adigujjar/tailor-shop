@@ -20,6 +20,8 @@ public class Customer{
     private  String suitExtraNotes;
     private  String suitCuff;
     private  String key;
+    private  String colorOrBanDesign;
+    private  String keraDesign;
 
     public Customer() {
     }
@@ -40,7 +42,9 @@ public class Customer{
                     String suitModa,
                     String suitExtraNotes,
                     String suitCuff,
-                    String key
+                    String key,
+                    String colorOrBanDesign,
+                    String keraDesign
     ) {
         this.serial_number = serial_number;
         this.name = name;
@@ -61,6 +65,24 @@ public class Customer{
         this.suitExtraNotes = suitExtraNotes;
         this.key = key;
         this.suitCuff = suitCuff;
+        this.colorOrBanDesign = colorOrBanDesign;
+        this.keraDesign = keraDesign;
+    }
+
+    public void setKeraDesign(String keraDesign) {
+        this.keraDesign = keraDesign;
+    }
+
+    public String getKeraDesign() {
+        return keraDesign;
+    }
+
+    public void setColorOrBanDesign(String colorOrBanDesign) {
+        this.colorOrBanDesign = colorOrBanDesign;
+    }
+
+    public String getColorOrBanDesign() {
+        return colorOrBanDesign;
     }
 
     public void setKey(String key) {

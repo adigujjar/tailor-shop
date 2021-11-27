@@ -30,7 +30,7 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
 
     Button btnSaveInfo;
     Customer customer;
-    CheckBox pocketOne,pocketTwo,pocketThree,pocketFour;
+    CheckBox pocketOne,pocketTwo,pocketThree,pocketFour, colorCheck, banCheck, golKeraCheck, seedhaKeraCheck;
 
     PopupCallback popupCallback;
 
@@ -63,6 +63,10 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         pocketTwo = view.findViewById(R.id.checkbox2);
         pocketThree = view.findViewById(R.id.checkbox3);
         pocketFour = view.findViewById(R.id.checkbox4);
+        colorCheck = view.findViewById(R.id.checkboxColor);
+        banCheck = view.findViewById(R.id.checkboxBan);
+        golKeraCheck = view.findViewById(R.id.checkboxCircular);
+        seedhaKeraCheck = view.findViewById(R.id.checkboxStraight);
 
         customer = Hawk.get("customer");
         txtser.setText(customer.getSerial_number());
@@ -82,6 +86,18 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             pocketFour.setChecked(true);
         }
 
+        if (customer.getColorOrBanDesign().equals("1")) {
+            colorCheck.setChecked(true);
+        } else {
+            banCheck.setChecked(true);
+        }
+
+        if (customer.getKeraDesign().equals("1")) {
+            seedhaKeraCheck.setChecked(true);
+        } else {
+            golKeraCheck.setChecked(true);
+        }
+
         suitChest.setText(customer.getChestSuit());
         suitBack.setText(customer.getBackSuit());
         suitChestLoose.setText(customer.getChestLoose());
@@ -97,6 +113,10 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         pocketTwo.setOnClickListener(this);
         pocketThree.setOnClickListener(this);
         pocketFour.setOnClickListener(this);
+        colorCheck.setOnClickListener(this);
+        banCheck.setOnClickListener(this);
+        golKeraCheck.setOnClickListener(this);
+        seedhaKeraCheck.setOnClickListener(this);
 
         return view;
     }
@@ -106,6 +126,16 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         pocketTwo.setChecked(false);
         pocketThree.setChecked(false);
         pocketFour.setChecked(false);
+    }
+
+    private void resetBanOrColorDesign() {
+        banCheck.setChecked(false);
+        colorCheck.setChecked(false);
+    }
+
+    private void resetFrontKeraDesign() {
+        seedhaKeraCheck.setChecked(false);
+        golKeraCheck.setChecked(false);
     }
 
     @Override
@@ -141,6 +171,36 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             pocketFour.setChecked(true);
         }
 
+        if (v == colorCheck) {
+            resetBanOrColorDesign();
+            colorCheck.setChecked(true);
+        } else if (v == banCheck){
+            resetBanOrColorDesign();
+            banCheck.setChecked(true);
+        }
+
+        if (v == seedhaKeraCheck) {
+            resetFrontKeraDesign();
+            seedhaKeraCheck.setChecked(true);
+        } else if (v == golKeraCheck) {
+            resetFrontKeraDesign();
+            golKeraCheck.setChecked(true);
+        }
+
+        String colorOrBanDesign = "";
+        if (colorCheck.isChecked()) {
+            colorOrBanDesign = "1";
+        } else if (banCheck.isChecked()){
+            colorOrBanDesign = "2";
+        }
+
+        String keraDesign = "";
+        if (seedhaKeraCheck.isChecked()) {
+            keraDesign = "1";
+        } else if (golKeraCheck.isChecked()){
+            keraDesign = "2";
+        }
+
         if (v == btnSaveInfo) {
             String pockets = "";
             if (pocketOne.isChecked()) {
@@ -156,8 +216,8 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             customer = new Customer(
                     txtser.getText().toString(), txtname.getText().toString(), txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
                     suitChest.getText().toString(), suitBack.getText().toString(), suitNeck.getText().toString(), suitChestLoose.getText().toString(), suitBackLoose.getText().toString(), suitdaman.getText().toString(),
-                    trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey()
-            );
+                    trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey(),
+                    colorOrBanDesign, keraDesign);
 
             PopUp.getInstance().myDialog(requireContext(), popupCallback, "Are you sure you want to update..", "This customer data will update by Anmol Tailor", -1);
         }
