@@ -34,7 +34,9 @@ import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 
+import dagger.hilt.android.HiltAndroidApp;
 
+@HiltAndroidApp
 public class MainActivity extends AppCompatActivity implements PopupCallback {
 
     public ArrayList<Customer> arrayList = new ArrayList<Customer>();
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements PopupCallback {
         Hawk.init(this).build();
         popupCallback = this;
         floatingActionButton = findViewById(R.id.fab);
-        //searchView = findViewById(R.id.search_phone);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

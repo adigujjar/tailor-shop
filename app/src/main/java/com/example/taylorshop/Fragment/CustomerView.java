@@ -23,6 +23,9 @@ import com.orhanobut.hawk.Hawk;
 
 import java.util.HashMap;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class CustomerView extends Fragment implements View.OnClickListener, PopupCallback {
     TextView txtser;
     EditText suitLength, suitArms, suitShoulders, suitModa, suitChest, suitBack, suitChestLoose, txtname,

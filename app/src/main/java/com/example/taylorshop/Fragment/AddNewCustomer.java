@@ -36,6 +36,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class AddNewCustomer extends Fragment {
 
     EditText name_customer_text, serial_num_customer_text, mobile_customer_text;
@@ -85,27 +90,32 @@ public class AddNewCustomer extends Fragment {
         //progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
-        databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                {
-                    progressDialog.dismiss();
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if(imm.isAcceptingText()) { // verify if the soft keyboard is open
-                        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        if (!isOnline()) {
+
+        } else {
+            databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful())
+                    {
+                        progressDialog.dismiss();
+                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
+                            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                        }
+                        getActivity().finish();
+                        startActivity(new Intent(getContext(), MainActivity.class));
                     }
-                    getActivity().finish();
-                    startActivity(new Intent(getContext(), MainActivity.class));
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
+
     public boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager)getActivity().
                 getSystemService(Context.CONNECTIVITY_SERVICE);
