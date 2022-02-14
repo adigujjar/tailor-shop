@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.taylorshop.MainActivity;
 import com.example.taylorshop.Models.Customer;
 import com.example.taylorshop.R;
+import com.example.taylorshop.data.AppDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,11 +88,10 @@ public class AddNewCustomer extends Fragment {
     public void writeNewUser(String name, String serial, String mobile)
     {
         progressDialog = new ProgressDialog(getContext(),R.style.Custom);
-        //progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
         if (!isOnline()) {
-
+            AppDatabase.Companion.getInstance(requireContext()).customerDao().insertCustomer(customer);
         } else {
             databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

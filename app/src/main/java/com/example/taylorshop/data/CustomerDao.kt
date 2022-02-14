@@ -13,7 +13,7 @@ interface CustomerDao {
     fun getCustomerList(): Flow<List<Customer>>
 
     @Insert
-    suspend fun insertCustomer(customer: Customer): Long
+     fun insertCustomer(customer: Customer): Long
 
     @Insert
     suspend fun updateCustomer(customer: Customer): Long
