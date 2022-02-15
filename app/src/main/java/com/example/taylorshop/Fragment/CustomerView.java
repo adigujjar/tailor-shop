@@ -1,6 +1,8 @@
 package com.example.taylorshop.Fragment;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.example.taylorshop.MainActivity;
 import com.example.taylorshop.Models.Customer;
 import com.example.taylorshop.R;
+import com.example.taylorshop.data.AppDatabase;
 import com.example.taylorshop.interfaces.PopupCallback;
 import com.example.taylorshop.ui.PopUp;
 import com.orhanobut.hawk.Hawk;
@@ -25,7 +28,7 @@ import java.util.HashMap;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-@AndroidEntryPoint
+
 public class CustomerView extends Fragment implements View.OnClickListener, PopupCallback {
     TextView txtser;
     EditText suitLength, suitArms, suitShoulders, suitModa, suitChest, suitBack, suitChestLoose, txtname,
@@ -216,7 +219,7 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
                 pockets = "4";
             }
 
-            customer = new Customer(
+            customer = new Customer(0,
                     txtser.getText().toString(), txtname.getText().toString(), txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
                     suitChest.getText().toString(), suitBack.getText().toString(), suitNeck.getText().toString(), suitChestLoose.getText().toString(), suitBackLoose.getText().toString(), suitdaman.getText().toString(),
                     trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey(),
@@ -228,8 +231,19 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
 
     @Override
     public void onClick(int position) {
-        HashMap<String, Object> childUpdates = new HashMap<String, Object>();
-        childUpdates.put(customer.getKey(), customer);
-        ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
+        if (isOnline()) {
+            HashMap<String, Object> childUpdates = new HashMap<String, Object>();
+            childUpdates.put(customer.getKey(), customer);
+            ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
+        } else {
+            AppDatabase.Companion.getInstance(requireContext()).customerDao().updateCustomer(customer);
+        }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)getActivity().
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }

@@ -69,7 +69,8 @@ public class AddNewCustomer extends Fragment {
                 public void onClick(View view) {
                     if (!isOnline()){
                         Toast.makeText(getContext(),"No Internet Connection!", Toast.LENGTH_LONG).show();
-                    } else if (TextUtils.isEmpty(name_customer_text.getText().toString())){
+                    }
+                    if (TextUtils.isEmpty(name_customer_text.getText().toString())){
                         name_customer_text.setError("Required");
                     }else if (TextUtils.isEmpty(serial_num_customer_text.getText().toString()) || serial_num_customer_text.getText().toString().length() > 5 ||
                             serial_num_customer_text.getText().toString().matches(".*[a-zA-Z]+.*")) {
@@ -89,9 +90,12 @@ public class AddNewCustomer extends Fragment {
     {
         progressDialog = new ProgressDialog(getContext(),R.style.Custom);
         progressDialog.show();
-        Customer customer = new Customer(serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
+        Customer customer = new Customer(0,serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
         if (!isOnline()) {
             AppDatabase.Companion.getInstance(requireContext()).customerDao().insertCustomer(customer);
+            progressDialog.dismiss();
+            getActivity().finish();
+            startActivity(new Intent(getContext(), MainActivity.class));
         } else {
             databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

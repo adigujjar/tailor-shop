@@ -58,7 +58,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder,  int position) {
 
         holder.Name_customer.setText(customerArrayList.get(position).getName());
         holder.serial_num_customer.setText(customerArrayList.get(position).getSerial_number());
@@ -100,5 +100,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             layout = view.findViewById(R.id.parentlay);
         }
     }
+
+    public void setData(ArrayList<Customer> user){
+        customerArrayList =user;
+        notifyDataSetChanged();
+
+    }
+
 }
 

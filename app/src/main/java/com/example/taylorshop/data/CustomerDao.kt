@@ -1,8 +1,9 @@
 package com.example.taylorshop.data
 
+import android.provider.SyncStateContract.Helpers.insert
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.taylorshop.Models.Customer
-import kotlinx.coroutines.flow.Flow
 
 /**
  * The Data Access Object for the [CustomerDao] class.
@@ -10,14 +11,18 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CustomerDao {
     @Query("SELECT * FROM Customer")
-    fun getCustomerList(): Flow<List<Customer>>
+    fun getCustomerList(): LiveData<List<Customer>>
 
     @Insert
-     fun insertCustomer(customer: Customer): Long
+    fun insertCustomer(customer: Customer): Long
 
-    @Insert
-    suspend fun updateCustomer(customer: Customer): Long
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateCustomer(customer: Customer)
 
     @Delete
-    suspend fun deleteCustomer(customer: Customer)
+    fun deleteCustomer(customer: Customer)
+
+    @Query("SELECT * from Customer WHERE phone_number= :phone")
+    fun getItemById(phone: String): List<Customer?>?
+
 }

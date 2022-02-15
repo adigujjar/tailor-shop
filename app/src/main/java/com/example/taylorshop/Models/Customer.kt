@@ -2,9 +2,12 @@ package com.example.taylorshop.Models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "Customer")
 data class Customer(
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0,
     @ColumnInfo(name = "serial_number")
     var serial_number: String? = null,
 
