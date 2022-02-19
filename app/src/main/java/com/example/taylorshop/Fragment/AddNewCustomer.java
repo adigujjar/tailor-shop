@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.orhanobut.hawk.Hawk;
 
 import javax.inject.Inject;
 
@@ -91,33 +92,34 @@ public class AddNewCustomer extends Fragment {
         progressDialog = new ProgressDialog(getContext(),R.style.Custom);
         progressDialog.show();
         Customer customer = new Customer(0,serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
-        if (!isOnline()) {
+//        if (!isOnline()) {
+            Hawk.put(customer.getPhone_number(), customer);
             AppDatabase.Companion.getInstance(requireContext()).customerDao().insertCustomer(customer);
             progressDialog.dismiss();
             getActivity().finish();
             startActivity(new Intent(getContext(), MainActivity.class));
-        } else {
-            databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful())
-                    {
-                        progressDialog.dismiss();
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
-                            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                        }
-                        getActivity().finish();
-                        startActivity(new Intent(getContext(), MainActivity.class));
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+//        } else {
+//            databaseReference.push().setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful())
+//                    {
+//                        progressDialog.dismiss();
+//                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
+//                            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+//                        }
+//                        getActivity().finish();
+//                        startActivity(new Intent(getContext(), MainActivity.class));
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }
     }
 
     public boolean isOnline() {

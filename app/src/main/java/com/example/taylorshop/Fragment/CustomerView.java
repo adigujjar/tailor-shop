@@ -236,7 +236,26 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             childUpdates.put(customer.getKey(), customer);
             ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
         } else {
-            AppDatabase.Companion.getInstance(requireContext()).customerDao().updateCustomer(customer);
+            AppDatabase.Companion.getInstance(requireContext()).customerDao().updateCustomer(
+                    customer.getBackLoose(),
+                    customer.getArmsSuit(),
+                    customer.getChestLoose(),
+                    customer.getBackSuit(),
+                    customer.getColorOrBanDesign(),
+                    customer.getKeraDesign(),
+                    customer.getLengthSuit(),
+                    customer.getName(),
+                    customer.getNeckSuit(),
+                    customer.getPhone_number(),
+                    customer.getSerial_number(),
+                    customer.getShoulderSuit(),
+                    customer.getSuitCuff(),
+                    customer.getSuitFront(),
+                    customer.getSuitModa(),
+                    customer.getTrouserEdge(),
+                    customer.getTrouserLength(),
+                    customer.getSuitPocket()
+            );
         }
     }
 

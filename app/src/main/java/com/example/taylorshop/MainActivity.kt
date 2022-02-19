@@ -45,36 +45,39 @@ class MainActivity : AppCompatActivity(), PopupCallback {
         floatingActionButton.setOnClickListener(View.OnClickListener { addCustomer() })
 
         //fetch data offline
-        if (FirebaseApp.getApps(this).isNotEmpty() && !isOnline) if (this::databaseReference.isInitialized) FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+//        if (FirebaseApp.getApps(this).isNotEmpty() && !isOnline) if (this::databaseReference.isInitialized) FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         databaseReference = FirebaseDatabase.getInstance().reference.child("Contact")
-        databaseReference.keepSynced(true)
-            customerVM.customerList.observe(this) {
-                customerVM.checkInternetConnectivity(isOnline,this, databaseReference, it)
-            }
-
-            databaseReference.addValueEventListener(object : ValueEventListener {
+//        databaseReference.keepSynced(true)
+//            customerVM.customerList.observe(this) {
+//            }
+//
+        if (!Hawk.contains("Fetched_from_firebase")) {
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     arrayList.clear()
                     for (postsnapshot in dataSnapshot.children) {
+                        Hawk.put("Fetched_from_firebase", true)
                         val customer = postsnapshot.getValue(Customer::class.java)
                         customer!!.key = postsnapshot.key
                         customer.name
                         customer.serial_number
                         customer.phone_number
                         arrayList.add(customer)
+                        AppDatabase.getInstance(applicationContext).customerDao().insertCustomer(customer)
                     }
-                    mAdapter = CustomAdapter(arrayList, applicationContext, popupCallback)
-                    layoutManager = LinearLayoutManager(this@MainActivity)
-                    recyclerView.setLayoutManager(layoutManager)
-                    recyclerView.setAdapter(mAdapter)
+//                    mAdapter = CustomAdapter(arrayList, applicationContext, popupCallback)
+//                    layoutManager = LinearLayoutManager(this@MainActivity)
+//                    recyclerView.setLayoutManager(layoutManager)
+//                    recyclerView.setAdapter(mAdapter)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
+        }
 
-        if (!isOnline) {
             customerVM.customerList.observe(this) {
                 if (!it.isNullOrEmpty()) {
+                    customerVM.checkInternetConnectivity(isOnline,this, databaseReference, it)
                     mAdapter = CustomAdapter(arrayList, applicationContext, popupCallback)
                     val recyclerView = recyclerView
                     arrayList.addAll(it as ArrayList<Customer>)
@@ -82,7 +85,6 @@ class MainActivity : AppCompatActivity(), PopupCallback {
                     recyclerView.adapter = mAdapter
                     recyclerView.layoutManager = LinearLayoutManager(this)
                 }
-        }
         }
     }
 
@@ -144,26 +146,17 @@ class MainActivity : AppCompatActivity(), PopupCallback {
         }
 
     override fun onClick(position: Int) {
-        if (isOnline) {
-            val ref = FirebaseDatabase.getInstance().reference
-            val sQuery = ref.child("Contact").orderByChild("phone_number").equalTo(
-                arrayList[position]!!.phone_number
-            )
-            sQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.children) {
-                        snapshot.ref.removeValue()
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
-            arrayList.removeAt(position)
-            arrayList.clear()
-        } else {
          AppDatabase.getInstance(this).customerDao().deleteCustomer(arrayList[position]!!)
-            arrayList.removeAt(position)
+        if (Hawk.contains("delete_customer")) {
+            val data = Hawk.get<HashMap<String, Customer>>("delete_customer")
+            data[arrayList[position]?.phone_number.toString()] = arrayList[position]!!
+            Hawk.put("delete_customer", data)
+        } else {
+            val deleteUsers = HashMap<String, Customer>()
+            deleteUsers[arrayList[position]?.phone_number.toString()] = arrayList[position]!!
+            Hawk.put("delete_customer" , deleteUsers)
         }
+        arrayList.removeAt(position)
         if (mAdapter != null) mAdapter!!.notifyDataSetChanged()
     }
 

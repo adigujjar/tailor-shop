@@ -11,10 +11,6 @@ class CustomerRepository (private val customerDao: CustomerDao) {
        customerDao.insertCustomer(customer)
    }
 
-    suspend fun updateCustomerLocally(customer: Customer) {
-       customerDao.updateCustomer(customer)
-   }
-
     suspend fun deleteCustomerLocally(customer: Customer) {
        customerDao.deleteCustomer(customer)
    }

@@ -13,16 +13,23 @@ interface CustomerDao {
     @Query("SELECT * FROM Customer")
     fun getCustomerList(): LiveData<List<Customer>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCustomer(customer: Customer): Long
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateCustomer(customer: Customer)
 
     @Delete
     fun deleteCustomer(customer: Customer)
 
-    @Query("SELECT * from Customer WHERE phone_number= :phone")
-    fun getItemById(phone: String): List<Customer?>?
+    @Query("UPDATE Customer SET serial_number= :Serial_number, name= :Name, lengthSuit= :LengthSuit, backLoose=:BackLoose,armsSuit=:ArmsSuit,chestLoose=:ChestLoose,backSuit=:BackSuit,colorOrBanDesign=:ColorOrBanDesign,keraDesign=:KeraDesign, lengthSuit=:LengthSuit,neckSuit=:NeckSuit, phone_number=:Phone_number, shoulderSuit=:ShoulderSuit,suitCuff=:SuitCuff, suitFront=:SuitFront, suitModa=:SuitModa,suitPocket=:SuitPocket, trouserEdge=:TrouserEdge,trouserLength=:TrouserLength WHERE phone_number= :Phone_number")
+    fun updateCustomer(BackLoose: String, ArmsSuit: String,
+                       ChestLoose: String, BackSuit: String,
+                       ColorOrBanDesign: String, KeraDesign: String,
+                       LengthSuit: String,
+                       Name: String, NeckSuit: String,
+                       Phone_number: String,
+                       Serial_number: String, ShoulderSuit: String, SuitCuff: String,
+                       SuitFront: String,
+                       SuitModa: String, TrouserEdge: String,
+                       TrouserLength: String, SuitPocket: String)
 
 }
