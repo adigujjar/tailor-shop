@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), PopupCallback {
                         val customer = postsnapshot.getValue(Customer::class.java)
                         customer!!.key = postsnapshot.key
                         arrayList.add(customer)
+                        Hawk.put("userID", customer.id)
                         AppDatabase.getInstance(applicationContext).customerDao().insertCustomer(customer)
                     }
                 }
