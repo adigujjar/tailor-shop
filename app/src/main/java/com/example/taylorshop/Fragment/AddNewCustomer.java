@@ -96,7 +96,7 @@ public class AddNewCustomer extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Contact").child(String.valueOf(updateId));
 
         Hawk.put("userID", updateId);
-        Customer customer = new Customer(updateId,serial, name, mobile, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0","", "0", "", "");
+        Customer customer = new Customer(updateId,serial, name, mobile, "", "", "", "", "", "", "", "", "", "", "", "", "", "","", "", "", "");
         if (!isOnline()) {
             Hawk.put(customer.getPhone_number(), customer);
             AppDatabase.Companion.getInstance(requireContext()).customerDao().insertCustomer(customer);
