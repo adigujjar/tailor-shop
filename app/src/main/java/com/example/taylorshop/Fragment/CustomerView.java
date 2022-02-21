@@ -219,7 +219,7 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
                 pockets = "4";
             }
 
-            customer = new Customer(0,
+            customer = new Customer(customer.getId(),
                     txtser.getText().toString(), txtname.getText().toString(), txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
                     suitChest.getText().toString(), suitBack.getText().toString(), suitNeck.getText().toString(), suitChestLoose.getText().toString(), suitBackLoose.getText().toString(), suitdaman.getText().toString(),
                     trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey(),
@@ -233,9 +233,38 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
     public void onClick(int position) {
         if (isOnline()) {
             HashMap<String, Object> childUpdates = new HashMap<String, Object>();
-            childUpdates.put(customer.getKey(), customer);
+            childUpdates.put(String.valueOf(customer.getId()), customer);
             ((MainActivity) requireActivity()).databaseReference.updateChildren(childUpdates);
+            AppDatabase.Companion.getInstance(requireContext()).customerDao().updateCustomer(
+                    customer.getBackLoose(),
+                    customer.getArmsSuit(),
+                    customer.getChestLoose(),
+                    customer.getBackSuit(),
+                    customer.getColorOrBanDesign(),
+                    customer.getKeraDesign(),
+                    customer.getLengthSuit(),
+                    customer.getName(),
+                    customer.getNeckSuit(),
+                    customer.getPhone_number(),
+                    customer.getSerial_number(),
+                    customer.getShoulderSuit(),
+                    customer.getSuitCuff(),
+                    customer.getSuitFront(),
+                    customer.getSuitModa(),
+                    customer.getTrouserEdge(),
+                    customer.getTrouserLength(),
+                    customer.getSuitPocket()
+            );
         } else {
+            if (Hawk.contains("update_customer")) {
+                HashMap<String, Customer> data = Hawk.get("update_customer");
+                data.put(customer.getPhone_number(), customer);
+                        Hawk.put("update_customer", data);
+            } else {
+                HashMap<String, Customer> updateUsers = new HashMap<String, Customer>();
+                updateUsers.put(customer.getPhone_number(), customer);
+                Hawk.put("update_customer", updateUsers);
+            }
             AppDatabase.Companion.getInstance(requireContext()).customerDao().updateCustomer(
                     customer.getBackLoose(),
                     customer.getArmsSuit(),
