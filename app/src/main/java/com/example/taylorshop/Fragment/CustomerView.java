@@ -13,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.taylorshop.MainActivity;
@@ -36,9 +39,14 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
 
     Button btnSaveInfo;
     Customer customer;
-    CheckBox pocketOne,pocketTwo,pocketThree,pocketFour, colorCheck, banCheck, golKeraCheck, seedhaKeraCheck;
+    CheckBox pocketOne,pocketTwo,pocketThree,pocketFour, colorCheck, banCheck, golKeraCheck, seedhaKeraCheck, cbFP, cbSLP, cbSRP, cbTP;
 
+    HorizontalScrollView pocketsView;
     PopupCallback popupCallback;
+    private boolean fp;
+    private boolean tp;
+    private boolean rp;
+    private boolean lp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +77,13 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         pocketTwo = view.findViewById(R.id.checkbox2);
         pocketThree = view.findViewById(R.id.checkbox3);
         pocketFour = view.findViewById(R.id.checkbox4);
+
+        pocketsView = view.findViewById(R.id.allPockets);
+        cbFP = view.findViewById(R.id.cBFPocket);
+        cbSLP = view.findViewById(R.id.cbSLP);
+        cbSRP = view.findViewById(R.id.cbSRP);
+        cbTP = view.findViewById(R.id.cbTP);
+
         colorCheck = view.findViewById(R.id.checkboxColor);
         banCheck = view.findViewById(R.id.checkboxBan);
         golKeraCheck = view.findViewById(R.id.checkboxCircular);
@@ -88,7 +103,7 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             pocketTwo.setChecked(true);
         } else if (customer.getSuitPocket().equals("3")) {
             pocketThree.setChecked(true);
-        } else {
+        } else if(customer.getSuitPocket().equals("4")){
             pocketFour.setChecked(true);
         }
 
@@ -96,6 +111,10 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             colorCheck.setChecked(true);
         } else {
             banCheck.setChecked(true);
+        }
+
+        if (pocketOne.isChecked() || pocketTwo.isChecked() || pocketThree.isChecked() || pocketFour.isChecked()) {
+            pocketsView.setVisibility(View.VISIBLE);
         }
 
         if (customer.getKeraDesign().equals("1")) {
@@ -114,6 +133,16 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         suitNeck.setText(customer.getNeckSuit());
         suitdaman.setText(customer.getSuitFront());
         suitCuff.setText(customer.getSuitCuff());
+
+        cbFP.setChecked(customer.getPkF());
+        cbSRP.setChecked(customer.getPkR());
+        cbSLP.setChecked(customer.getPkL());
+        cbTP.setChecked(customer.getPkT());
+        fp = customer.getPkF();
+        rp = customer.getPkR();
+        lp = customer.getPkL();
+        tp = customer.getPkT();
+
         btnSaveInfo.setOnClickListener(this);
         pocketOne.setOnClickListener(this);
         pocketTwo.setOnClickListener(this);
@@ -123,11 +152,47 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
         banCheck.setOnClickListener(this);
         golKeraCheck.setOnClickListener(this);
         seedhaKeraCheck.setOnClickListener(this);
+        cbSLP.setOnClickListener(this);
+        cbFP.setOnClickListener(this);
+        cbSRP.setOnClickListener(this);
+        cbTP.setOnClickListener(this);
+
+        cbTP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                tp = b;
+            }
+        });
+        cbSLP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                lp = b;
+            }
+        });
+
+        cbSRP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                rp = b;
+            }
+        });
+
+        cbFP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                fp = b;
+            }
+        });
 
         return view;
     }
 
     private void resetPockets() {
+        pocketsView.setVisibility(View.VISIBLE);
         pocketOne.setChecked(false);
         pocketTwo.setChecked(false);
         pocketThree.setChecked(false);
@@ -177,6 +242,16 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             pocketFour.setChecked(true);
         }
 
+        if (v == cbTP) {
+            if (cbTP.isChecked()) cbTP.setChecked(true); else cbTP.setChecked(false);
+        } else if (v == cbSLP) {
+            if (cbSLP.isChecked()) cbSLP.setChecked(true); else cbSLP.setChecked(false);
+        } else if(v == cbSRP) {
+            if (cbSRP.isChecked())cbSRP.setChecked(true); else cbSRP.setChecked(false);
+        } else if (v == cbFP){
+            if (cbFP.isChecked())cbFP.setChecked(true); else cbFP.setChecked(false);
+        }
+
         if (v == colorCheck) {
             resetBanOrColorDesign();
             colorCheck.setChecked(true);
@@ -211,6 +286,7 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             String pockets = "";
             if (pocketOne.isChecked()) {
                 pockets = "1";
+
             } else if (pocketTwo.isChecked()) {
                 pockets = "2";
             } else if (pocketThree.isChecked()) {
@@ -220,7 +296,8 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
             }
 
             customer = new Customer(customer.getId(),
-                    txtser.getText().toString(), txtname.getText().toString(), txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
+                    txtser.getText().toString(), txtname.getText().toString(),fp,rp,lp,tp,
+                    txtmble.getText().toString(), suitLength.getText().toString(), suitShoulders.getText().toString(), suitArms.getText().toString(),
                     suitChest.getText().toString(), suitBack.getText().toString(), suitNeck.getText().toString(), suitChestLoose.getText().toString(), suitBackLoose.getText().toString(), suitdaman.getText().toString(),
                     trouserLength.getText().toString(), trouserPhncha.getText().toString(), pockets, suitModa.getText().toString(), suitExtraNotes.getText().toString(), suitCuff.getText().toString() ,customer.getKey(),
                     colorOrBanDesign, keraDesign);
@@ -253,7 +330,11 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
                     customer.getSuitModa(),
                     customer.getTrouserEdge(),
                     customer.getTrouserLength(),
-                    customer.getSuitPocket()
+                    customer.getSuitPocket(),
+                    customer.getPkF(),
+                    customer.getPkL(),
+                    customer.getPkR(),
+                    customer.getPkT()
             );
         } else {
             if (Hawk.contains("update_customer")) {
@@ -283,7 +364,11 @@ public class CustomerView extends Fragment implements View.OnClickListener, Popu
                     customer.getSuitModa(),
                     customer.getTrouserEdge(),
                     customer.getTrouserLength(),
-                    customer.getSuitPocket()
+                    customer.getSuitPocket(),
+                    customer.getPkF(),
+                    customer.getPkL(),
+                    customer.getPkR(),
+                    customer.getPkT()
             );
         }
     }

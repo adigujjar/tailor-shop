@@ -51,9 +51,6 @@ class MainActivity : AppCompatActivity(), PopupCallback {
                         Hawk.put("Fetched_from_firebase", true)
                         val customer = postsnapshot.getValue(Customer::class.java)
                         customer!!.key = postsnapshot.key
-                        customer.name
-                        customer.serial_number
-                        customer.phone_number
                         arrayList.add(customer)
                         AppDatabase.getInstance(applicationContext).customerDao().insertCustomer(customer)
                     }

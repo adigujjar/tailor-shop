@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.taylorshop.Models.Customer
 import com.example.taylorshop.utilities.DATABASE_NAME
 
-@Database(entities = [Customer::class,], version = 1, exportSchema = false)
+@Database(entities = [Customer::class,], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun customerDao(): CustomerDao
 
@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-                .allowMainThreadQueries().build()
+                .allowMainThreadQueries().fallbackToDestructiveMigration().build()
         }
     }
 }

@@ -14,6 +14,18 @@ data class Customer(
     @ColumnInfo(name = "name")
     var name: String? = null,
 
+    @ColumnInfo(name = "pkF")
+    var pkF: Boolean = false,
+
+    @ColumnInfo(name = "pkR")
+    var pkR: Boolean = false,
+
+    @ColumnInfo(name = "pkL")
+    var pkL: Boolean = false,
+
+    @ColumnInfo(name = "pkT")
+    var pkT: Boolean = false,
+
     @ColumnInfo(name = "phone_number")
     var phone_number: String? = null,
 

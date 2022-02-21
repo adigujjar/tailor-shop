@@ -341,7 +341,73 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/allPockets"
+                >
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/cBFPocket"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Front"
+                    android:id="@+id/pocketFront"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/cbSLP"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Side Left Pocket"
+                    android:id="@+id/pocketSideLeft"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/cbSRP"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Side Right Pocket"
+                    android:id="@+id/sideRightPocket"
+                    />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/cbTP"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trouser Pocket"
+                    android:id="@+id/trouserPocket"
+                    />
+
+            </LinearLayout>
+            </HorizontalScrollView>
+
+    </LinearLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout

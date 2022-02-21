@@ -20,7 +20,7 @@ interface CustomerDao {
     @Delete
     fun deleteCustomer(customer: Customer)
 
-    @Query("UPDATE Customer SET serial_number= :Serial_number, name= :Name, lengthSuit= :LengthSuit, backLoose=:BackLoose,armsSuit=:ArmsSuit,chestLoose=:ChestLoose,backSuit=:BackSuit,colorOrBanDesign=:ColorOrBanDesign,keraDesign=:KeraDesign, lengthSuit=:LengthSuit,neckSuit=:NeckSuit, phone_number=:Phone_number, shoulderSuit=:ShoulderSuit,suitCuff=:SuitCuff, suitFront=:SuitFront, suitModa=:SuitModa,suitPocket=:SuitPocket, trouserEdge=:TrouserEdge,trouserLength=:TrouserLength WHERE phone_number= :Phone_number")
+    @Query("UPDATE Customer SET serial_number= :Serial_number, name= :Name, lengthSuit= :LengthSuit, backLoose=:BackLoose,armsSuit=:ArmsSuit,chestLoose=:ChestLoose,backSuit=:BackSuit,colorOrBanDesign=:ColorOrBanDesign,keraDesign=:KeraDesign, lengthSuit=:LengthSuit,neckSuit=:NeckSuit, phone_number=:Phone_number, shoulderSuit=:ShoulderSuit,suitCuff=:SuitCuff, suitFront=:SuitFront, suitModa=:SuitModa,suitPocket=:SuitPocket, trouserEdge=:TrouserEdge,trouserLength=:TrouserLength,pkF =:fp,pkL = :lp, pkR = :rp, pkT= :tp WHERE phone_number= :Phone_number")
     fun updateCustomer(BackLoose: String, ArmsSuit: String,
                        ChestLoose: String, BackSuit: String,
                        ColorOrBanDesign: String, KeraDesign: String,
@@ -30,6 +30,6 @@ interface CustomerDao {
                        Serial_number: String, ShoulderSuit: String, SuitCuff: String,
                        SuitFront: String,
                        SuitModa: String, TrouserEdge: String,
-                       TrouserLength: String, SuitPocket: String)
+                       TrouserLength: String, SuitPocket: String, fp: Boolean, lp: Boolean, rp: Boolean, tp: Boolean)
 
 }
